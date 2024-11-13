@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../db/prisma.js";
 import bcryptjs from "bcryptjs";
-import generateToken from "../utils/generatetoken.js";
+import generateToken from "../utils/generateToken.js";
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -87,6 +87,27 @@ export const logout = async (req: Request, res: Response) => {
     res.status(200).json({ message: "logged out successfully" });
   } catch (error: any) {
     console.log("Error in logout controller", error.message);
+    res.status(501).json({ error: "Internal Server Error" });
+  }
+};
+
+
+export const getMe = async (req: Request, res: Response) => {
+  try {
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json({
+      id: user.id,
+      fullName: user.fullName,
+      username: user.username,
+      profilePic: user.profilePic,
+    });
+  } catch (error: any) {
+    console.log("Error in getMe controller", error.message);
     res.status(501).json({ error: "Internal Server Error" });
   }
 };
