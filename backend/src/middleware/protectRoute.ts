@@ -20,7 +20,8 @@ const protectRoute = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<any> => {
+  //Promise<any> took help from stackoverflow; because protectRoute giving warning in routes
   try {
     const token = req.cookies.jwt;
     if (!token) {

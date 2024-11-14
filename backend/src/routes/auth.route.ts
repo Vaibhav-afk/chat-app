@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
   login,
   logout,
@@ -7,9 +7,9 @@ import {
 } from "../controllers/auth.controller.js";
 import protectRoute from "../middleware/protectRoute.js";
 
-const router = express.Router();
+const router: Router = express.Router();
 
-router.get("/me", protectRoute,getMe);
+router.get("/me", protectRoute, getMe);
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
