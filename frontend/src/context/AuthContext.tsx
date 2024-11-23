@@ -7,6 +7,7 @@ import {
   useContext,
   ReactNode,
 } from "react";
+import toast from "react-hot-toast";
 
 type AuthUserType = {
   id: string;
@@ -26,6 +27,7 @@ const AuthContext = createContext<{
   isLoading: true,
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuthContext = () => {
   return useContext(AuthContext);
 };
@@ -43,8 +45,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
           throw new Error(data.error);
         }
         setAuthUser(data);
-      } catch (err) {
-        console.log(err);
+      } catch (error: any) {
+        console.log(error.message);
+        toast.error(error.message);
       } finally {
         setIsLoading(false);
       }
