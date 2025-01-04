@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../db/prisma.js";
+import { getReceiverSocketId, io } from "../socket/socket.ts";
 
 export const sendMessage = async (req: Request, res: Response) => {
   try {
@@ -41,6 +42,13 @@ export const sendMessage = async (req: Request, res: Response) => {
           },
         },
       });
+    }
+
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    
+    //If receiver socket id is present in socketMap
+    if(receiverSocketId){
+      io.to(receiverSocketId).emit("newMessage",newMessage)
     }
 
     res.status(201).json(newMessage);

@@ -11,4 +11,5 @@ type MessageType = {
   body: string;
   senderId: string;
   createdAt: string;
+  shouldShake?: boolean;
 };
